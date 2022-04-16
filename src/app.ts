@@ -9,6 +9,7 @@ import notFoundMiddleware from './middleware/not-found';
 import errorHandlerMiddleware from './middleware/error-handler';
 
 import authRouter from './routes/authRoutes';
+import userRouter from './routes/userRoutes';
 
 dotenv.config()
 const app: Application = express();
@@ -22,7 +23,8 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello world')
 })
 
-app.use('/api/v1/auth' ,authRouter)
+app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/users', userRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
