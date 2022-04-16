@@ -7,6 +7,8 @@ import connectDb from './db/connect';
 import notFoundMiddleware from './middleware/not-found';
 import errorHandlerMiddleware from './middleware/error-handler';
 
+import authRouter from './routes/authRoutes';
+
 dotenv.config()
 const app: Application = express();
 
@@ -17,6 +19,8 @@ app.use(morgan('tiny'));
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello world')
 })
+
+app.use('/api/v1/auth' ,authRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
