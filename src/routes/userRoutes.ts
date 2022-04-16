@@ -11,4 +11,6 @@ router.route('/updateUser').patch(updateUser)
 
 router.route('/updateUserPassword').patch(updateUserPassword)
 
+router.route('/:id').get(getSingleUser)
+
 export default router
