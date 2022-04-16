@@ -7,6 +7,7 @@ export interface IUser extends Document {
     email: string,
     password: string,
     role: 'admin' | 'user',
+    comparePassword: (candidatePassword: string) => boolean,
     _id: Types.ObjectId
 }
 

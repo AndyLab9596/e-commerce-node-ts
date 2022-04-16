@@ -1,6 +1,5 @@
-import jwt from 'jsonwebtoken';
-import { IUser } from '../models/User';
 import { Response } from 'express';
+import jwt from 'jsonwebtoken';
 import { TokenUser } from './createTokenUser';
 
 interface IPayload {
@@ -36,5 +35,5 @@ const attachCookiesToResponse = ({ res, user }: IAttachCookiesToResponse) => {
     });
 }
 
-export { createJWT, isTokenValid, attachCookiesToResponse }
+export { createJWT, isTokenValid, attachCookiesToResponse };
 
