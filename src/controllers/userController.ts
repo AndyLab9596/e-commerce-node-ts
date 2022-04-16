@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import CustomError from '../errors/index';
-import User from '../models/User';
+import User, { IUser } from '../models/User';
 import createTokenUser from '../utils/createTokenUser';
 import { attachCookiesToResponse } from '../utils/jwt';
 import { StatusCodes } from 'http-status-codes';
@@ -26,11 +26,34 @@ const showCurrentUser = async (req: Request, res: Response) => {
 }
 
 const updateUser = async (req: Request, res: Response) => {
-    res.send('update user')
+    const { body: { email, name }, user: { userId } } = req;
+    if (!email || !name) throw new CustomError.BadRequestError('Please provide all values');
+
+    const user = await User.findOne({ _id: userId }) as IUser;
+
+    user.email = email;
+    user.name = name;
+
+    await user.save();
+
+    const tokenUser = createTokenUser(user);
+    attachCookiesToResponse({ res, user: tokenUser });
+    res.status(StatusCodes.OK).json({ user: tokenUser })
+
 }
 
 const updateUserPassword = async (req: Request, res: Response) => {
-    res.send('update user password')
+    const { body: { oldPassword, newPassword }, user: { userId } } = req;
+    if (!oldPassword || !newPassword) throw new CustomError.BadRequestError('Please provide both values');
+
+    const user = await User.findOne({ _id: userId }) as IUser;
+    const isPasswordCorrect = await user?.comparePassword(oldPassword);
+    if (!isPasswordCorrect) throw new CustomError.UnauthenticatedError('Credential invalid');
+
+    user.password = newPassword;
+
+    await user.save();
+    res.status(StatusCodes.OK).json({ msg: 'Success! Password updated' })
 }
 
 export { getAllUsers, getSingleUser, showCurrentUser, updateUser, updateUserPassword }
