@@ -7,6 +7,7 @@ import connectDb from './db/connect';
 
 import notFoundMiddleware from './middleware/not-found';
 import errorHandlerMiddleware from './middleware/error-handler';
+import { authenticateUser } from './middleware/authenticate';
 
 import authRouter from './routes/authRoutes';
 import userRouter from './routes/userRoutes';
@@ -24,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/users', userRouter)
+app.use('/api/v1/users',authenticateUser as any, userRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

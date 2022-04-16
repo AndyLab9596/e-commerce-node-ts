@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { getAllUsers, getSingleUser, showCurrentUser, updateUser, updateUserPassword } from '../controllers/userController';
+import { authenticateUser, authorizePermissions } from '../middleware/authenticate';
 
 const router = Router();
 
-router.route('/').get(getAllUsers)
+router.route('/').get(authorizePermissions('admin') as any, getAllUsers)
 
 router.route('/showMe').get(showCurrentUser)
 
