@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import "express-async-errors";
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import connectDb from './db/connect';
 
 import notFoundMiddleware from './middleware/not-found';
@@ -15,6 +16,7 @@ const app: Application = express();
 // Middleware 
 app.use(express.json());
 app.use(morgan('tiny'));
+app.use(cookieParser(process.env.JWT_SECRET))
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello world')
