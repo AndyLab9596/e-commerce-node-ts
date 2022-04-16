@@ -4,6 +4,7 @@ import User from '../models/User';
 import createTokenUser from '../utils/createTokenUser';
 import { attachCookiesToResponse } from '../utils/jwt';
 import { StatusCodes } from 'http-status-codes';
+import checkPermission from '../utils/checkPermission';
 
 
 const getAllUsers = async (req: Request, res: Response) => {
@@ -13,9 +14,10 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 const getSingleUser = async (req: Request, res: Response) => {
     const { params: { id: userId } } = req;
-    const user = await User.find({ _id: userId });
+    const user = await User.findOne({ _id: userId }).select("-password");
     if (!user) throw new CustomError.NotFoundError(`No user match with this id: ${userId}`)
     // Check permission
+    checkPermission(req.user, user._id);
     res.status(StatusCodes.OK).json({ user })
 }
 
