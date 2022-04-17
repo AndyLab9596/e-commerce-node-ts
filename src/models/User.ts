@@ -1,4 +1,4 @@
-import mongoose, { Types, Document } from "mongoose";
+import mongoose, { Types, Document, Query } from "mongoose";
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 
