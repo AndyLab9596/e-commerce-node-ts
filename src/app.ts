@@ -3,7 +3,12 @@ import "express-async-errors";
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import fileUpload from 'express-fileupload'
+import fileUpload from 'express-fileupload';
+import rateLimiter from 'express-rate-limit';
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import cors from 'cors';
+import mongoSanitize from 'express-mongo-sanitize';
 
 import connectDb from './db/connect';
 
@@ -19,6 +24,17 @@ import orderRouter from './routes/orderRoutes';
 
 dotenv.config()
 const app: Application = express();
+
+// Security packages
+app.set('trust proxy', 1);
+app.use(rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 60
+}))
+app.use(helmet())
+app.use(cors())
+app.use(xss())
+app.use(mongoSanitize())
 
 // Middleware 
 app.use(express.json());
