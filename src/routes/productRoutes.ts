@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createProduct, getAllProducts, getSingleProduct, updateProduct, deleteProduct, updateImage } from '../controllers/productController';
 import { authorizePermissions, authenticateUser } from '../middleware/authenticate';
+import { getSingleProductReviews } from '../controllers/reviewController';
 
 const router = Router();
 
@@ -13,6 +14,9 @@ router
     .get(getSingleProduct)
     .patch([authenticateUser, authorizePermissions('admin')], updateProduct)
     .delete([authenticateUser, authorizePermissions('admin')], deleteProduct);
+
+router.route('/:id/reviews').get(getSingleProductReviews)
+
 
 
 export default router;

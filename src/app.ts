@@ -14,6 +14,7 @@ import { authenticateUser } from './middleware/authenticate';
 import authRouter from './routes/authRoutes';
 import userRouter from './routes/userRoutes';
 import productRouter from './routes/productRoutes';
+import reviewRouter from './routes/reviewRoutes';
 
 dotenv.config()
 const app: Application = express();
@@ -32,6 +33,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', authenticateUser, userRouter)
 app.use('/api/v1/products', productRouter)
+app.use('/api/v1/reviews', reviewRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
