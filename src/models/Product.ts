@@ -13,7 +13,8 @@ export interface IProduct {
     inventory: number,
     averageRating: number,
     numOfReviews: number,
-    user: Types.ObjectId
+    user: Types.ObjectId,
+    _id: Types.ObjectId,
 }
 
 const ProductSchema = new mongoose.Schema<IProduct>({
